@@ -29,11 +29,11 @@ encrypt_this = phrase.split("")
 ##reverse array
 encrypt_1 = encrypt_this.reverse
 ##adds a random number to the first position
-encrypt_2 = encrypt_1.insert(0, (rand(1..2000)))
+encrypt_2 = encrypt_1.insert(0, (rand(1..9)))
 ##inserts "fE4$ in position 2"
-encrypt_3 = encrypt_2.insert(1, "fE4$")
+encrypt_3 = encrypt_2.insert(1, (rand(1..9)))
 ##inserts random in position -1
-encrypt_4 = encrypt_3.insert(-1, (rand(1..2000)))
+encrypt_4 = encrypt_3.insert(-1, (rand(1..9)))
 #convers it to a string
 encrypted = encrypt_4.join("")
 
@@ -43,11 +43,19 @@ puts "#{phrase} encrypted is:"
 puts encrypted
 
 #decrypt it
-
-decrypted_1 = encrypt_4.delete_at(-1)
-decrypted_2 = decrypted_1.delete("fE4$")
-decrypted_3 = decrypted_2.delete_at(0)
-decrypted_4 = decrypted_3.reverse
+puts encrypt_4
+encrypt_4.pop
+decrypted_1 = encrypt_4
+decrypted_2 = decrypted_1.delete_at(1)
+#decrypted_2.pop
+#decrypted_3 = decrypted_2
+print decrypted_2
+decrypted_2.String?
+decrypted_2.index do |x| 
+	if x == Fixnum
+		decrypted_2.delete[x]
+	end
+decrypted_4 = decrypted_2.reverse
 decrypted = decrypted_4.join("")
 
 
@@ -56,5 +64,5 @@ puts "#{encrypted} decrypted is #{decrypted}"
 
 
 
-
+end
 
