@@ -1,5 +1,5 @@
 #Lab work class 3, Startup Institute Rampup.
-#Jen Trudell March 30, 2015
+#Jen Trudell April 1, 2015
 
 #Build an application that can encrypt and decrypt a string. For example:
 #encrypt(“This is a secret”) should return something like “jhsdakha%j3jb”
@@ -11,19 +11,17 @@
 #encrypt(“this is a secret”, 5)
 #http://en.wikipedia.org/wiki/Caesar_cipher
 
-
-
 puts "Enter a phrase to encrypt:"
 phrase = gets.chomp.downcase
 phrase_array = phrase.split("")
+puts # blank line
 
 # creats hash that assigns random numbers/letters to a-z, ' and one empty space
-def encrypto (key)
 encrypt_hash = {
 "a" => 5,
 "b" => "v",
 "c" => 8,
-"d" => "f",
+"d" => "j",
 "e" => "m",
 "f" => "l",
 "g" => 6,
@@ -50,26 +48,17 @@ encrypt_hash = {
 "'" => "n"
 }
 
+# encrypts the phrase
 encrypted_array = []
+phrase_array.each do |x|
+	y = encrypt_hash.fetch(x)
+	encrypted_array.push(y)
+end
 
-y = encrypt_hash.fetch(key)
-encrypted_array.push(y)
 encrypted_string = encrypted_array.join("")
+puts "Now I will encrypt #{phrase}:" 
 puts "Encrypted: #{encrypted_string}"
-
-
-
-end
-
-# encrypts user input based on hash
-def encrypted(phrase)
-	encrypted_string = ""
-	phrase.each do |x|
-	encrypto(x)
-		end
-end
-
-encrypted(phrase_array)
+puts # blank line
 
 # decrypts the encrypted string 
 decrypted_array = []
