@@ -1,15 +1,9 @@
 #Lab work class 3, Startup Institute Rampup.
 #Jen Trudell April 1, 2015
 
-#Build an application that can encrypt and decrypt a string. For example:
-#encrypt(“This is a secret”) should return something like “jhsdakha%j3jb”
-
-#You should also be able to decrypt the encrypted message.
-#decrypt(“jhsdakha%j3jb”) it should return “This is a secret”
-
-#Bonus: Implement a Caesar Cipher encryption which is a simple encryption method by shifting the letters down a certain number. You’ll need the encrypted string and the correct number shifted.
-#encrypt(“this is a secret”, 5)
-#http://en.wikipedia.org/wiki/Caesar_cipher
+#Startup Institute lab, class 3: Build an application that can encrypt and decrypt a string. For example:
+#encrypt(“This is a secret”) should return something like “jhsdakha%j3jb” .You should also be able to decrypt the encrypted message.
+#decrypt(“jhsdakha%j3jb”) it should return “This is a secret”.
 
 puts "Enter a phrase to encrypt:"
 phrase = gets.chomp.downcase

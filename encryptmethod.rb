@@ -3,8 +3,6 @@
 
 #same as hashencrypt.rb only this one uses methods 
 
-
-
 # encrypts the phrase
 
 def encrypt(user_phrase)
