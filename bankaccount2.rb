@@ -1,79 +1,116 @@
 class BankAccount
 
-  def initialize(name, pin, starting_balance)
+  def initialize(name, number, pin, balance)
 	@name = name
-	@pin = 2345
-	@starting_balance = starting_balance
+	@number = number
+	@pin = pin
+	@balance = balance
   end
 
-  def account_balance
-	@current_balance = @starting_balance.to_i + @deposit.to_i - @withdraw.to_i
-  end
-
-  def current_balance=(account)
-	account.current_balance = account_balance
-  end
-
-  def account_name
+  def name
 	@name
   end
 
-  def account_pin
-	@pin
+  def account
+	@account
   end
 
-  def account_withdraw
-	puts "How much do you want to withdraw?"
-    @withdraw = gets.chomp.to_i
-    @current_balance = @current_balance.to_i - @withdraw.to_i
-    update_balance
+  attr_accessor :pin, :balance
+
+  def balance
+	@balance
   end
 
+  def new_balance
+  	@new_balance
+  end
+
+  def new_pin
+  	@new_pin
+  end
+
+  def login
+  	puts "Enter your pin: "
+  	input = gets.chomp.to_i
+  	if input == @pin
+  		puts "Thanks. Your account name is #{@name}, your account number is #{@number} and your current account balance is $#{@balance}."
+  		account_transaction
+  	else puts "Wrong pin. Please type yes if you would like to try again, or no if you would like to quit."
+  		input2 = gets.chomp
+  		if input2 == "no"
+  			puts "Have a nice day!"
+  		else 
+  			login
+  		end
+  	end
+  end
+
+  def account_transaction
+  	puts "Would you like to make a deposit, make a withdrawal, check your balance, change your pin or quit?"
+  	puts "Please enter deposit, withdrawal, balance, pin or quit: "
+  	input = gets.chomp
+  	if input == "deposit"
+  		account_deposit
+  	elsif input == "withdrawal"
+  		account_withdrawal
+  	elsif input == "balance"
+  		account_balance
+  	elsif input == "pin"
+  		change_pin
+  	else puts "Have a nice day!"
+  	end
+  end
+  
   def account_deposit
-	puts "How much do you want to deposit?"
-	@deposit = gets.chomp.to_i
-	@current_balance = @current_balance.to_i + @deposit.to_i
-	update_balance
+  	puts "How much would you like to deposit?"
+  	input = gets.chomp.to_i
+  	@new_balance = input + @balance
+  	update_balance
+  	puts "Your account balance is $#{@balance}"
+  	account_transaction
   end
 
-  def update_balance
-	puts "Your new account balance is $#{@current_balance}"
+  def account_withdrawal
+  	puts "How much would you like to withdraw?"
+  	input = gets.chomp.to_i
+  	@new_balance = @balance - input
+  	update_balance
+  	puts "Your new account balance is $#{@balance}"
+  	account_transaction
   end
 
-end
+  def account_balance
+ 	puts "Your current account balance is $#{@balance}."
+ 	account_transaction
+ end
 
-test_account = BankAccount.new("Test Account", @pin, 500)
+ def update_balance
+ 	@balance = @new_balance
+ end
 
+def update_pin
+ 	@pin = @new_pin
+ end
 
-
-
-def account_login(account)
-puts "Please enter your pin:"
-entered_pin = gets.chomp.to_i
-
-  if entered_pin == account.account_pin
-	puts "Your account name is #{account.account_name} and your account balance is $#{account.account_balance}"
-	account_transactions(account)
-  else 
-	puts "You entered the wrong pin. Try again? Enter Yes or No."
-	answer = gets.chomp.downcase
-	if answer == "yes"
-	account_login(account)
-else puts "Have a nice day!"
-end
+  def change_pin
+  	puts "What would you like your new pin to be?"
+  	input = gets.chomp.to_i
+  	@new_pin = input
+  	update_pin
+  	puts "Your pin has been change to #{@pin}"
+  	account_transaction
   end
+  		
 end
 
-def account_transactions(account)
-puts "Would you like to deposit or withdraw money from your account? Please enter deposit, withdraw, or end."
-	decision = gets.chomp.downcase
-	  if decision == "deposit"
-		account.account_deposit
-	  elsif decision == "withdraw"
-	  account.account_withdraw
-	  else puts "Have a nice day!"
-	end
-end
-account_login(test_account)
+test_account = BankAccount.new("Test Account", 555, @pin, @balance)
+test_account.pin = 123
+test_account.balance = 750
+
+another_account = BankAccount.new("Jen's account", 1234, 555, 10000)
+another_account.login
+
+
+
 
 
