@@ -51,6 +51,10 @@ def list_names(characteristic)
 	end
 end
 
+def new_suspects(existing_suspects, color)
+		existing_suspects & color
+end
+
 def suspect_gender
 opposite_gender = " "
 puts "Do you think a boy or a girl did it? Enter girl or boy."
@@ -105,36 +109,31 @@ def suspect_some_color
 end
 
 def suspect_eye
+	eyes = []
 	puts "Do you think the suspect has brown eyes, blue eyes or green eyes? Please enter brown, blue or green."
 	color_guess = gets.chomp
 	if color_guess == "brown" && $eyes_brown.include?($criminal)
-		puts "You are right, the criminal has brown eyes."
-		for i in $suspects do
-			if $eyes_brown.include?(i) == true
-			$suspects = $suspects.delete[i]
-			end
-			puts "The remaining suspects are: " 
-		list_names($suspects)
-		end
-	
+	puts "You are right, the criminal has brown eyes."
+	puts new_suspects($suspects, $eyes_brown)
+		
+		 
 	elsif color_guess == "blue" && $eyes_blue.include?($criminal)
 		puts "You are right, the criminal has blue eyes."
 		for i in $suspects do
-			if $eyes_blue.include?(i) == true
-			$suspects = $suspects.delete[i]
+			if $eyes_blue.include?(i) == false
+			$suspects = $suspects.delete(i)
 			end
 			puts "The remaining suspects are: " 
-		list_names($suspects)
+		print $suspects
 		end
-
 	elsif color_guess == "green" && $eyes_green.include?($criminal)
 		puts "You are right, the criminal has green eyes."
 		for i in $suspects do
 			if $eyes_green.include?(i) == false
-			$suspects = $suspects.delete[i]
+			$suspects = $suspects.delete(i)
 			end
 			puts "The remaining suspects are: " 
-		list_names($suspects)
+		print $suspects
 		end
 
 	elsif color_guess != "brown" && color_guess != "blue" && color_guess != "green"  
