@@ -24,20 +24,6 @@ attr_reader :name, :gender, :skin_tone, :hair_color, :eye_color, :criminal_name
  	@eye_color = eye_color
  end
 
- def criminal_name
- @criminal_name = rand(@name)
-end
-
-def what_gender
-	if @gender == "girl"
-		puts "girl"
-	elsif @gender == "boy"
-		puts "boy"
-	else puts "That's a new one!"
-	end 
-end
-
-
 end
 
 rachel = Suspect.new("rachel", "girl", "black", "auburn", "brown") 
@@ -62,22 +48,162 @@ michelle = Suspect.new("michelle", "girl", "black", "brown", "brown")
 tyson = Suspect.new("tyson", "boy", "black", "black", "brown")
 ursula = Suspect.new("ursula", "girl", "white", "auburn", "green")
 
-suspects = ["rachel", "mac", "nick", "angie", "theo", "joshua", "emily", "jason", "john", "grace", "jake", "megan", "ryan", 
-		"brandon", "beth", "diane", "chris", "david", "michelle", "tyson", "ursula"]
+$suspects = [rachel, mac, nick, angie, theo, joshua, emily, jason, john, grace, jake, megan, ryan, 
+		brandon, beth, diane, chris, david, michelle, tyson, ursula]
 
 $counter = 3
+
+$boys = Array.new
+for i in $suspects
+	if i.gender == "boy"
+$boys << i 
+	end
+end
+	
+$girls = Array.new
+for i in $suspects
+	if i.gender == "girl"
+$girls << i 
+	end
+end
+
+$black = Array.new
+for i in $suspects
+	if i.skin_tone == "black"
+$black << i 
+	end
+end
+	
+$white = Array.new
+for i in $suspects
+	if i.skin_tone == "white"
+$white << i 
+	end
+end
+
+$criminal_generated = $suspects[rand(0..20)]
 
 def prompt
 	print ">> "
 end
 
+def the_end
+	puts "Game over. You have no guess left."
+	puts "The criminal is: #{$criminal_generated.name}"
+end
+
+def list_suspects(suspects)
+	for i in suspects
+		puts i.name
+	end
+end
+
+def delete_suspects(characteristic)
+	$suspects = $suspects - characteristic
+end
+
+
+def what_gender(guess)
+	if guess == "girl" && $criminal_generated.gender == "girl"
+		puts "You are right, the criminal is a girl."
+		delete_suspects($boys)
+		puts "The remaining suspects are: "
+		list_suspects($suspects)
+		puts "You have #{$counter} guesses left."
+	elsif guess == "boy" && $criminal_generated.gender == "boy"
+		puts "You are right, the criminal is a boy."
+		delete_suspects($girls)
+		puts "The remaining suspects are: "
+		list_suspects($suspects)
+		puts "You have #{$counter} guesses left."
+	else 
+		$counter -= 1
+		puts "Sorry, you are wrong. The criminal is a #{$criminal_generated.gender}."
+		if $criminal_generated.gender == "girl"
+			delete_suspects($boys)
+			puts "The remaining suspects are: "
+			list_suspects($suspects)
+			puts "You have #{$counter} guesses left."
+		else
+			delete_suspects($girls)
+			puts "The remaining suspects are: "
+			list_suspects($suspects)
+			puts "You have #{$counter} guesses left."
+		end
+	end 
+end
+
+def what_characteristic(characteristic, color=0)
+  if $counter > 0
+	
+    if characteristic == "skin"
+		puts "What color skin do you think the criminal has? Enter white or black."
+		prompt
+		guess = gets.chomp
+		if guess == "white" && $criminal_generated.skin_tone == "white"
+		puts "You are right, the criminal is white."
+		delete_suspects($black)
+		puts "The remaining suspects are: "
+		list_suspects($suspects)
+		puts "You have #{$counter} guesses left."
+		elsif guess == "black" && $criminal_generated.skin_tone == "black"
+		puts "You are right, the criminal is black."
+		delete_suspects($white)
+		puts "The remaining suspects are: "
+		list_suspects($suspects)
+	 	puts "You have #{$counter} guesses left."
+	  else 
+		$counter -= 1
+		puts "Sorry, you are wrong. The criminal is #{$criminal_generated.skin_tone}."
+		if $criminal_generated.skin_tone == "black"
+			delete_suspects($white)
+			puts "The remaining suspects are: "
+			list_suspects($suspects)
+			puts "You have #{$counter} guesses left."
+		else
+			delete_suspects($black)
+			puts "The remaining suspects are: "
+			list_suspects($suspects)
+			puts "You have #{$counter} guesses left."
+		end
+	  end 
+  
+    elsif characteristic == "hair"
+		puts "What color hair do you think the criminal has?"
+		guess = gets.chomp
+		
+    elsif characteristic == "eyes"
+		puts "What color eyes do you think the criminal has?"
+		guess = gets.chomp
+	
+    else 
+		puts "That is not an option. Please enter skin, eyes or hair."
+	end 
+  else 
+  	the_end
+  end
+end
+
+
+
+	
+
 
 puts "You are playing 'Guess Who?'" 
 puts "Someone committed a crime. You have three chances to guess the name of the criminal."
 puts "The names of the suspects are: " 
-puts suspects.join(",") 
+list_suspects($suspects)
 puts "Do you think the criminal is a girl or a boy? Enter girl or boy."
-print prompt
+prompt
 gender_guess = gets.chomp
-puts tyson.criminal_name 
+what_gender(gender_guess)
+puts "Choose whether to guess the criminal's skin color, eye color or hair color."
+puts "Enter skin, eyes or hair."
+prompt
+color_characteristic = gets.chomp
+what_characteristic(color_characteristic)
+
+
+puts "The criminal is: #{$criminal_generated.name}"
+
 

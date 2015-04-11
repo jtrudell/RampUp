@@ -51,10 +51,6 @@ def list_names(characteristic)
 	end
 end
 
-def new_suspects(existing_suspects, color)
-		existing_suspects & color
-end
-
 def suspect_gender
 opposite_gender = " "
 puts "Do you think a boy or a girl did it? Enter girl or boy."
@@ -81,8 +77,10 @@ else
 	puts "You are wrong. The suspect is not a #{gender_guess}, the suspect is a #{opposite_gender}."
 	if opposite_gender == "boy"
 		$suspects << $boys
+		$suspects = $suspects.flatten
 	else 
 		$suspects << $girls
+		$suspects = $suspects.flatten
 	end
 	puts "Here is the list of suspects: "
 	list_names($suspects)
@@ -114,8 +112,8 @@ def suspect_eye
 	color_guess = gets.chomp
 	if color_guess == "brown" && $eyes_brown.include?($criminal)
 	puts "You are right, the criminal has brown eyes."
-	puts new_suspects($suspects, $eyes_brown)
-		
+	puts $suspects & $eyes_brown
+			
 		 
 	elsif color_guess == "blue" && $eyes_blue.include?($criminal)
 		puts "You are right, the criminal has blue eyes."
