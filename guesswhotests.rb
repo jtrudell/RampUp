@@ -76,8 +76,18 @@ def list_suspects(suspects)
 	end
 end
 
-def delete_suspects(characteristic)
-	$suspects = $suspects - characteristic
+def delete_suspects(guess, attribute)
+	delete_something = Array.new
+	for i in $suspects
+		if i.attribute != guess
+		  delete_something << i
+		else 
+		  dont_delete = Array.new
+		  dont_delete << i
+		  delete_something = $suspects - dont_delete
+		end
+	end
+	$suspects = $suspects - delete_something
 end
 
 def the_end
@@ -91,24 +101,13 @@ def guess_characteristics
 	puts "Guess the criminal's gender. Enter boy or girl."
 	prompt
     gender_input = gets.chomp
-
+    delete_suspects(gender_input)
 	  if gender_input == $criminal_generated.gender
-		delete_gender = Array.new
-			for i in $suspects
-				if i.gender != gender_input
-				delete_gender << i 
-				end
-			end
-			delete_suspects(delete_gender)
+		
+			delete_suspects(gender_input)
 			puts "Good guess! The criminal is a #{gender_input}. Deleted all of the suspects that are not #{gender_input}s."
 	  else gender_input != $criminal_generated.gender
-		delete_gender = Array.new
-			for i in $suspects
-				if i.gender == gender_input
-				delete_gender << i 
-				end
-			end
-			delete_suspects(delete_gender)
+			delete_suspects(gender_input)
 			puts "The criminal is NOT a #{gender_input}. Deleted all of the suspects that are #{gender_input}s."
 	  end
 
@@ -124,7 +123,7 @@ def guess_characteristics
 				delete_hair << i 
 				end
 			end
-			delete_suspects(delete_hair)
+			delete_suspects(delete_hair, gender)
 			puts "Good guess! The criminal has #{hair_input} hair. Deleted all of the suspects that do not have #{hair_input} hair."
 	  else hair_input != $criminal_generated.hair_color
 		delete_hair = Array.new
@@ -133,7 +132,7 @@ def guess_characteristics
 				delete_hair << i 
 				end
 			end
-			delete_suspects(delete_hair)
+			delete_suspects(delete_hair, gender)
 			puts "The criminal does NOT have #{hair_input} hair. Deleted all of the suspects that have #{hair_input} hair."
 	  end
 
@@ -163,7 +162,7 @@ def guess_characteristics
 	  end
 
 	# skin color guess
-	puts "Guess the criminal's skin color. Enter white or black." 
+	puts "Guess the criminal's skin color. Enter black or white." 
 	puts "(yeah I know, there should be more options, but I didn't make the rules.)"
 	prompt
 	skin_input = gets.chomp
@@ -232,4 +231,4 @@ puts "The suspects are identifiable by their gender, skin color, hair color, and
 guess_characteristics
 
 # TESTING NAME IS RIGHT 
-puts "FOR TESTING ONLY::The criminal program generated is: #{$criminal_generated.name}"
+#puts "FOR TESTING ONLY::The criminal is: #{$criminal_generated.name}"
