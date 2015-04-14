@@ -1,5 +1,6 @@
 # Create a Guess Who Game. Rampup Lab class #4.
 # Jen Trudell April 9, 2014
+# doesn't work, changed to classes. See guesswhofinal.rb
 
 
 #If guilty suspect doesn’t match the color/gender then remove the suspects of that color/gender
