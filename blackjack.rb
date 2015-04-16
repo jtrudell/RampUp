@@ -3,10 +3,10 @@
 
 #Directions:
 # Let’s build a simple Blackjack game. You will have a dealer and a player. There will only be one deck of cards. 
-# Aces are set to 1 and it does not have to support 11. Suits and face cards does not need to be supported either. 
+# Aces are set to 1 and it does not have to support 11. Suits and face cards do not need to be supported either. 
 #Rules of the game:
 # Player and Dealer gets two cards each. Player sees both their cards and can only see one of the dealer cards. 
-# Player has a choice to hit or stay. When player hits, player get another card. If player is over 21, player automatically lose. 
+# Player has a choice to hit or stay. When player hits, player gets another card. If player is over 21, player automatically lose. 
 # If player is under 21. You continue to ask if they want to hit or stay. Once you stay. It is the dealer’s(automated) turn. 
 # The rule for the dealer is this: Dealer MUST hit until they get to 17 or above. If they are at 17 or above they MUST stay. 
 # If dealer goes over 21 they automatically lose. If both the player and dealer are under 21 the one closest to 21 wins.
@@ -15,11 +15,6 @@
 # Support face cards, Support Aces with 1 and 11. Have multiple decks. Support a bankroll and wager amount.
 
 #General Rules of Black Jack:
-# 1. A card is dealt, face up, to each player in turn and then one to the dealer. 
-# 2. The dealer's card is face down and called the "hole" card.
-# 3. A second card is then dealt, again face up, to each player.
-# 4. Starting from the player to the left of the dealer, each player decides whether to draw further cards.
-# 5. After all players have completed their hands, the Dealer proceeds to draw cards to complete the Dealer's hand.
 # You win if:
 # => Your total is higher than the Dealer's total
 # => The Dealer goes over 21 or "busts" (provided you have not previously busted yourself).
@@ -57,9 +52,24 @@ class Deck < Card
 		end
 	end
 	
-	def card_value
-		cards.each do |i|
-		puts i.value
+	def hand_value(person, person_hand, answer)
+		total = 0
+		person_hand.each do |i|
+		total = total + i.value
+		end
+		puts "#{person.name} has #{total} points."
+		if total > 21
+			puts "Bust! #{person.name} loses."
+		elsif total == 21
+			puts "#{person.name} wins!"
+		else
+			if answer == "hit"
+			puts "#{person.name}, do you want to hit or stay?"
+			answer_again = gets.chomp
+			play(person, person_hand, answer_again)
+			else
+			puts "#{person.name} stays."
+			end
 		end
 	end
 
@@ -74,6 +84,29 @@ class Deck < Card
 		dealer_hand << x
 		puts "Dealt hole card to #{person.name}."
 	end
+
+	def play(person, person_hand, answer=0)
+		if answer == "hit"
+			puts "#{person.name} hits."
+			deal_card(person, person_hand)
+			self.hand_value(person, person_hand, answer)
+		elsif answer == "stay"
+			puts "#{person.name} stays."
+			self.hand_value(person, person_hand, answer)
+			exit
+		else 
+			puts "That isn't a good answer. Enter hit or stay."
+			answer = gets.chomp
+			play(person, person_hand, answer)
+		end
+	end
+		
+	def dealer_autohand(dealer, dealer_hand)
+		if #dealer hand value less than 17, dealer hits
+		else #dealer stays
+		end
+	end
+
 end
 
 def show_hand(hand)
@@ -112,21 +145,35 @@ dealer_hand = Array.new
 		
 deck = Deck.new("deck 1", standard_deck.shuffle, player_hand, dealer_hand)
  
-deck.card_name
-
-
-deck.deal_card(dealer, dealer_hand)
+# 1. A card is dealt, face up, to each player in turn.
 deck.deal_card(player, player_hand)
 
-
+# 2. A card is dealt to dealer. The dealer's card is face down and called the "hole" card.
 deck.hole_card(dealer, dealer_hand)
 
+# 3. A second card is then dealt, again face up, to each player and face up to dealer.
+deck.deal_card(player, player_hand)
+deck.deal_card(dealer, dealer_hand)
 
-deck.card_name
+# 4. Starting from the player to the left of the dealer, each player decides whether to draw further cards.
+puts "#{player.name}, do you want to hit or stay?"
+answer = gets.chomp
+deck.play(player, player_hand, answer)
 
-puts "break"
+# 5. After all players have completed their hands, the Dealer proceeds to draw cards to complete the Dealer's hand.
+# In this lab, dealer has to hit until they get 17, then they stay.
+deck.dealer_autoplay(dealer, dealer_hand)
 
-puts deck.show_hand(player_hand)
+
+
+
+#TEST!
+puts "-----------------"
+puts "Test"
+puts "Player's hand:"
+show_hand(player_hand)
+puts "Dealer's hand:"
+show_hand(dealer_hand)
 
 
 
