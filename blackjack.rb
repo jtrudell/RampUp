@@ -28,13 +28,8 @@
 
 
 
-class Dealer
+class Person
 	attr_accessor :name, :hole_card, :hit, :stay, :points
-end
-
-
-class Player
-	attr_accessor :name, :hand, :hit, :stay, :points
 end
 
 class Card
@@ -47,11 +42,13 @@ class Card
 end
 
 class Deck < Card
-	attr_accessor :name, :cards
+	attr_accessor :name, :cards, :player_hand, :dealer_hand
 
-	def initialize(name, cards)
+	def initialize(name, cards, player_hand, dealer_hand)
 		@name = name
 		@cards = cards
+		@player_hand = player_hand
+		@deal_hand = dealer_hand
 	end
 
 	def card_name
@@ -66,32 +63,27 @@ class Deck < Card
 		end
 	end
 
-	def deal_card(person)
+	def deal_card(person, person_hand)
 		x = cards.pop
+		person_hand << x
 		puts "Dealt card #{x.name} to #{person.name}."
 	end 
 
-	def hole_card(person)
+	def hole_card(person, dealer_hand)
 		x = cards.pop
-		hand(person, x)
+		dealer_hand << x
 		puts "Dealt hole card to #{person.name}."
-	end
-
-	def hand(person, card)
-		hand = Array.new
-		hand << card
-	end
-
-	# FIX THIS PLAYER/DEALER SUBCLASS?
-	def show_hand(person, hand)
-		cards.each do |i|
-		puts i.name
 	end
 end
 
+def show_hand(hand)
+	hand.each do |i|
+	puts i.name
+	end
+end
 
-dealer = Dealer.new
-player = Player.new
+dealer = Person.new
+player = Person.new
 dealer.name = "Dealer"
 player.name = "Jen"
 
@@ -113,21 +105,28 @@ standard_deck = [ace, ace, ace, ace, card_two, card_two, card_two, card_two, car
 				card_four, card_four, card_four, card_four, card_five, card_five, card_five, card_five, card_six, card_six, card_six, card_six, 
 				card_seven, card_seven, card_seven, card_seven, card_eight, card_eight, card_eight, card_eight, card_nine, card_nine, card_nine, 
 				card_nine, card_ten, card_ten, card_ten, card_ten, jack, jack, jack, jack, queen, queen, queen, queen, king, king, king, king]
+
+
+player_hand = Array.new
+dealer_hand = Array.new
 		
-deck = Deck.new("deck 1", standard_deck.shuffle)
+deck = Deck.new("deck 1", standard_deck.shuffle, player_hand, dealer_hand)
  
-
 deck.card_name
 
 
-deck.deal_card(dealer)
-deck.deal_card(player)
+deck.deal_card(dealer, dealer_hand)
+deck.deal_card(player, player_hand)
 
 
-deck.hole_card(dealer)
+deck.hole_card(dealer, dealer_hand)
 
 
 deck.card_name
+
+puts "break"
+
+puts deck.show_hand(player_hand)
 
 
 
