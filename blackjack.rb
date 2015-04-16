@@ -29,8 +29,9 @@
 
 
 class Dealer
-	attr_accessor :name, :hole_card, :hand, :hit, :stay, :points
+	attr_accessor :name, :hole_card, :hit, :stay, :points
 end
+
 
 class Player
 	attr_accessor :name, :hand, :hit, :stay, :points
@@ -70,6 +71,22 @@ class Deck < Card
 		puts "Dealt card #{x.name} to #{person.name}."
 	end 
 
+	def hole_card(person)
+		x = cards.pop
+		hand(person, x)
+		puts "Dealt hole card to #{person.name}."
+	end
+
+	def hand(person, card)
+		hand = Array.new
+		hand << card
+	end
+
+	# FIX THIS PLAYER/DEALER SUBCLASS?
+	def show_hand(person, hand)
+		cards.each do |i|
+		puts i.name
+	end
 end
 
 
@@ -102,15 +119,15 @@ deck = Deck.new("deck 1", standard_deck.shuffle)
 
 deck.card_name
 
-deck.deal_card(player)
-
-deck.deal_card(dealer)
-
-deck.card_name
 
 deck.deal_card(dealer)
 deck.deal_card(player)
 
+
+deck.hole_card(dealer)
+
+
 deck.card_name
+
 
 
