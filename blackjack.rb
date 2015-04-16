@@ -30,38 +30,87 @@
 
 class Dealer
 	attr_accessor :name, :hole_card, :hand, :hit, :stay, :points
-
-	def initialize(name, hole_card, hand, hit, stay, points)
-		@name = name
-		@hole_card = hole_card
-		@hand = hand
-		@hit = hit
-		@stay = stay
-		@points = points
-	end
 end
 
 class Player
 	attr_accessor :name, :hand, :hit, :stay, :points
+end
 
-	def initialize(name, hand, hit, stay, points)
+class Card
+	attr_accessor :name, :value
+
+	def initialize(name, value)
 		@name = name
-		@hand = hand
-		@hit = hit
-		@stay = stay
-		@points = points
+		@value = value
 	end
 end
 
-class Deck
-	attr_accessor :name, :number, :ace, :face_card, :regular_card
+class Deck < Card
+	attr_accessor :name, :cards
 
-	def initialize(name, number, ace, face_card, regular_card)
+	def initialize(name, cards)
 		@name = name
-		@number = number
-		@ace = ace
-		@face_card = face_card
-		@regular_card = regular_card
+		@cards = cards
 	end
 
+	def card_name
+		cards.each do |i|
+		puts i.name
+		end
+	end
+	
+	def card_value
+		cards.each do |i|
+		puts i.value
+		end
+	end
+
+	def deal_card(person)
+		x = cards.pop
+		puts "Dealt card #{x.name} to #{person.name}."
+	end 
+
 end
+
+
+dealer = Dealer.new
+player = Player.new
+dealer.name = "Dealer"
+player.name = "Jen"
+
+ace = Card.new("Ace", 1)
+king = Card.new("King", 10)
+queen = Card.new("Queen", 10)
+jack = Card.new("Jack", 10)
+card_ten = Card.new("10", 10)
+card_nine = Card.new("9", 9)
+card_eight = Card.new("8", 8)
+card_seven = Card.new("7", 7)
+card_six = Card.new("6", 6)
+card_five = Card.new("5", 5)
+card_four = Card.new("4", 4)
+card_three = Card.new("3", 3)
+card_two = Card.new("2", 2)
+
+standard_deck = [ace, ace, ace, ace, card_two, card_two, card_two, card_two, card_three, card_three, card_three, card_three, 
+				card_four, card_four, card_four, card_four, card_five, card_five, card_five, card_five, card_six, card_six, card_six, card_six, 
+				card_seven, card_seven, card_seven, card_seven, card_eight, card_eight, card_eight, card_eight, card_nine, card_nine, card_nine, 
+				card_nine, card_ten, card_ten, card_ten, card_ten, jack, jack, jack, jack, queen, queen, queen, queen, king, king, king, king]
+		
+deck = Deck.new("deck 1", standard_deck.shuffle)
+ 
+
+deck.card_name
+
+deck.deal_card(player)
+
+deck.deal_card(dealer)
+
+deck.card_name
+
+deck.deal_card(dealer)
+deck.deal_card(player)
+
+deck.card_name
+
+
