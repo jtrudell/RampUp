@@ -23,10 +23,6 @@
 
 
 
-class Person
-	attr_accessor :name, :hole_card, :hit, :stay, :points
-end
-
 class Card
 	attr_accessor :name, :value
 
@@ -37,11 +33,13 @@ class Card
 end
 
 class Deck < Card
-	attr_accessor :name, :cards, :player_hand, :dealer_hand
+	attr_accessor :name, :cards, :player_name, :dealer_name, :player_hand, :dealer_hand
 
-	def initialize(name, cards, player_hand, dealer_hand)
+	def initialize(name, cards, player_name, dealer_name, player_hand, dealer_hand)
 		@name = name
 		@cards = cards
+		@player_name = player_name
+		@dealer_name = dealer_name
 		@player_hand = player_hand
 		@deal_hand = dealer_hand
 	end
@@ -52,23 +50,24 @@ class Deck < Card
 		end
 	end
 	
-	def hand_value(person, person_hand, answer)
+	def hand_value(person, person_hand, answer=0)
 		total = 0
 		person_hand.each do |i|
 		total = total + i.value
 		end
-		puts "#{person.name} has #{total} points."
+		puts "#{person} has #{total} points."
 		if total > 21
-			puts "Bust! #{person.name} loses."
+			puts "Bust! #{person} loses. Dealer wins."
+			exit
 		elsif total == 21
-			puts "#{person.name} wins!"
+			puts "#{person} wins!"
 		else
 			if answer == "hit"
-			puts "#{person.name}, do you want to hit or stay?"
+			puts "#{person}, do you want to hit or stay?"
 			answer_again = gets.chomp
 			play(person, person_hand, answer_again)
 			else
-			puts "#{person.name} stays."
+			puts "#{person} stays."
 			end
 		end
 	end
@@ -76,24 +75,23 @@ class Deck < Card
 	def deal_card(person, person_hand)
 		x = cards.pop
 		person_hand << x
-		puts "Dealt card #{x.name} to #{person.name}."
+		puts "Dealt card #{x.name} to #{person}."
 	end 
 
 	def hole_card(person, dealer_hand)
 		x = cards.pop
 		dealer_hand << x
-		puts "Dealt hole card to #{person.name}."
+		puts "Dealt hole card to #{person}."
 	end
 
 	def play(person, person_hand, answer=0)
 		if answer == "hit"
-			puts "#{person.name} hits."
+			puts "#{person} hits."
 			deal_card(person, person_hand)
 			self.hand_value(person, person_hand, answer)
 		elsif answer == "stay"
-			puts "#{person.name} stays."
 			self.hand_value(person, person_hand, answer)
-			exit
+			self.dealer_autoplay(@dealer, @dealer_hand)
 		else 
 			puts "That isn't a good answer. Enter hit or stay."
 			answer = gets.chomp
@@ -101,9 +99,16 @@ class Deck < Card
 		end
 	end
 		
-	def dealer_autohand(dealer, dealer_hand)
-		if #dealer hand value less than 17, dealer hits
-		else #dealer stays
+	def dealer_autoplay(dealer, dealer_hand)
+		total = 0
+		dealer_hand.each do |i|
+		total = total + i.value
+		end
+		if total < 17
+			puts "#{dealer} hits."
+			deal_card(dealer, dealer_hand) 
+		else 
+			self.hand_value(dealer, dealer_hand, answer = "stay")
 		end
 	end
 
@@ -115,10 +120,8 @@ def show_hand(hand)
 	end
 end
 
-dealer = Person.new
-player = Person.new
-dealer.name = "Dealer"
-player.name = "Jen"
+dealer = "Dealer"
+player = "Jen"
 
 ace = Card.new("Ace", 1)
 king = Card.new("King", 10)
@@ -143,7 +146,7 @@ standard_deck = [ace, ace, ace, ace, card_two, card_two, card_two, card_two, car
 player_hand = Array.new
 dealer_hand = Array.new
 		
-deck = Deck.new("deck 1", standard_deck.shuffle, player_hand, dealer_hand)
+deck = Deck.new("deck 1", standard_deck.shuffle, player, dealer, player_hand, dealer_hand)
  
 # 1. A card is dealt, face up, to each player in turn.
 deck.deal_card(player, player_hand)
@@ -156,7 +159,7 @@ deck.deal_card(player, player_hand)
 deck.deal_card(dealer, dealer_hand)
 
 # 4. Starting from the player to the left of the dealer, each player decides whether to draw further cards.
-puts "#{player.name}, do you want to hit or stay?"
+puts "#{player}, do you want to hit or stay?"
 answer = gets.chomp
 deck.play(player, player_hand, answer)
 
