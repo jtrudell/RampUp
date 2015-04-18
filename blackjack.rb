@@ -35,7 +35,7 @@ class BlackJack < Card
 	def hand_value(person, person_hand, answer=0)
 		total = 0
 		person_hand.each do |i|
-		total = total + i.value
+		total += i.value
 		end
 		puts "#{person} has #{total} points."
 		if total > 21
@@ -65,7 +65,7 @@ class BlackJack < Card
 		x << i.name
 		end
 		print "#{person}'s hand: "
-		puts x.join(". ")
+		puts x.join(", ")
 	end
 
 	def deal_card(person, person_hand)
@@ -87,10 +87,10 @@ class BlackJack < Card
 			self.hand_value(person, person_hand, answer)
 		elsif answer == "stay"
 			self.hand_value(person, person_hand, answer)
-		else
+		else # if answer doesn't equal hit or stay, then dealer must be playing
 			total = 0
 			person_hand.each do |i|
-			total = total + i.value
+			total += i.value
 			end
 			if total < 17
 				puts "#{person} hits."
@@ -105,11 +105,11 @@ class BlackJack < Card
 	def who_won(player, dealer, dealer_hand, player_hand)
 		player_total = 0
 		player_hand.each do |i|
-		player_total = player_total + i.value
+		player_total += i.value
 		end
 		dealer_total = 0
 		dealer_hand.each do |i|
-		dealer_total = dealer_total + i.value
+		dealer_total += i.value
 		end
 		if player_total > dealer_total
 			puts "#{player} wins! #{player} has #{player_total} points, #{dealer} has #{dealer_total} points."
