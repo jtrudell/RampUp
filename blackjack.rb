@@ -161,6 +161,7 @@ game.hole_card(dealer, dealer_hand)
 
 # 3. A second card is then dealt, again face up, to each player and face up to dealer.
 game.deal_card(player, player_hand)
+
 game.deal_card(dealer, dealer_hand)
 
 # 4. Starting from the player to the left of the dealer, each player decides whether to draw further cards.
