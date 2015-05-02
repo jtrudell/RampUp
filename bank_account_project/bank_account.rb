@@ -1,4 +1,21 @@
+module Customer
+
+	class Person
+
+		attr_accessor :name
+
+		def initialize(name, address)
+			@name = name
+			@address = address
+		end
+
+	end
+
+end
+
 class BankAccount
+
+include Customer
 
 attr_accessor :name, :account_number, :balance
 
@@ -32,17 +49,30 @@ attr_accessor :name, :account_number, :balance
 		puts "Balance: $" + @balance.to_s
 		puts "----------------------"
 	end
-
 end
 
-my_account = BankAccount.new("Jen's Bank Account", 3334, 500)
+def open_account
+include Customer
+	puts "What is the customer's name?"
+	customer_name = gets.chomp
+	puts "What is the customer's address?"
+	customer_address = gets.chomp
+	Person.new(customer_name, customer_address)
+end
 
-my_account.status
-my_account.deposit
-my_account.withdrawal
-my_account.status
-my_account.withdrawal
-my_account.status
-my_account.withdrawal
-my_account.deposit
-my_account.status
+new_customer = open_account
+
+puts new_customer.name
+
+
+#my_account = BankAccount.new("Jen's Bank Account", 3334, 500)
+
+#my_account.status
+#my_account.deposit
+#my_account.withdrawal
+#my_account.status
+#my_account.withdrawal
+#my_account.status
+#my_account.withdrawal
+#my_account.deposit
+#my_account.status
