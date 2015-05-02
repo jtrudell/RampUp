@@ -144,8 +144,11 @@ standard_deck = [ace, ace, ace, ace, card_two, card_two, card_two, card_two, car
 				card_nine, card_ten, card_ten, card_ten, card_ten, jack, jack, jack, jack, queen, queen, queen, queen, king, king, king, king]
 
 
+puts "What is your name?"
+name = gets.chomp
+
 dealer = "Dealer"
-player = "Jen"
+player = name
 
 player_hand = Array.new
 dealer_hand = Array.new
