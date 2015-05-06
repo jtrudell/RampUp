@@ -40,4 +40,3 @@ end
 test_account = load_account
 test_account.transactions
 
-
