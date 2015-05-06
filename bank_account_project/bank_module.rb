@@ -1,5 +1,6 @@
 module Bank
-
+require 'yaml'
+require 'formatador'
 # create class BankAccount. BankAccount object initilized with customer name, account number, balance and password.
 class BankAccount
 
@@ -43,11 +44,13 @@ attr_accessor :name, :account_number, :balance, :password
 
 # status method prints out account name, account number, and balance
 	def status
-		puts "----Account Status as of #{transaction_time}----"
-		puts "Account Name: " + @name +"'s Account"
-		puts "Account Number: #" + @account_number.to_s
-		puts "Balance: $" + @balance.to_s
-		puts "----------------------"
+		puts ""
+		puts Formatador.display_line("[green]----Account Status as of #{transaction_time}----[/]")
+		puts "\tAccount Name: " + @name +"'s Account"
+		puts "\tAccount Number: #" + @account_number.to_s
+		puts "\tBalance: $" + @balance.to_s
+		puts ""
+		puts Formatador.display_line("[green]------------------------------------------------[/]")
 	end
 
 # atm method allows customer to call transactions method
@@ -82,10 +85,10 @@ attr_accessor :name, :account_number, :balance, :password
 		# calls check_password method. If check_password true (i.e. entered correct password), lists transaction options.
 		if check_password(answer) == true
 			puts "What would you like to do today? "
-			puts "\tEnter 1 to see account balance "
-			puts "\tEnter 2 to make a deposit "
-			puts "\tEnter 3 to make a withdrawal "
-			puts "\tEnter Q to quit "
+			puts Formatador.display("[green]Enter 1[/] to see account balance")
+			puts Formatador.display("[green]Enter 2[/] to make a deposit")
+			puts Formatador.display("[green]Enter 3[/] to make a withdrawal")
+			puts Formatador.display("[green]Enter Q[/] to quit")
 			print "Selection: "
 			selection = gets.chomp
 			# calls atm method bassed on what number they have selected

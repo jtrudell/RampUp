@@ -1,10 +1,10 @@
 
 require './bank_module'
+require 'yaml'
 
 # method to open a new account and write it to customer's yaml file
 def open_account
 include Bank
-require 'yaml'
 	puts "What is the customer's name?"
 	customer_name = gets.chomp
 	puts "What is the new account number?"
@@ -26,7 +26,6 @@ end
 # method to load account from customer's yaml file
 def load_account
 include Bank
-require 'yaml'
 	puts "What customer's account would you like to load?"
 	customer_name = gets.chomp
 	customer_file = "#{customer_name}" + ".yaml"
