@@ -1,25 +1,10 @@
-# create Module customer, which includes class Person. Person includes name and address.
-module Customer
 
-	class Person
-
-		attr_accessor :name, :address
-
-		def initialize(name, address)
-			@name = name
-			@address = address
-		end
-
-	end
-
-end
-
+module Bank
 # create class BankAccount, which includes Customer module. BankAccount includes account name, number and balance.
 class BankAccount
 
-include Customer
 
-attr_accessor :name, :account_number, :balance
+attr_accessor :name, :account_number, :balance, :password
 
 	def initialize (name, account_number, balance, password)
 		@name = name
@@ -43,7 +28,7 @@ attr_accessor :name, :account_number, :balance
 # deposit method handles deposits to accounts
 	def deposit
 		puts "How much would you like to deposit?"
-		amount_deposited = gets.chomp.to_i
+		amount_deposited = gets.chomp.to_f
 		self.account_balance(amount_deposited, withdrawal=0)
 		puts "You deposited $#{amount_deposited.to_s} on #{transaction_time}"
 	end
@@ -51,7 +36,7 @@ attr_accessor :name, :account_number, :balance
 # withdrawal method handles withdrawls from accounts
 	def withdrawal
 		puts "How much would you like to withdraw?"
-		amount_withdrawn = gets.chomp.to_i
+		amount_withdrawn = gets.chomp.to_f
 		self.account_balance(deposit = 0, amount_withdrawn)
 		puts "You withdrew $#{amount_withdrawn.to_s} on #{transaction_time}"
 	end
@@ -77,7 +62,10 @@ attr_accessor :name, :account_number, :balance
 			withdrawal
 			transactions
 		else 
-			exit
+			customer_file = "#{@name}" + ".yaml"
+				File.open(customer_file, 'w') do |file|  
+  			file.puts YAML::dump(self)
+  			end
 		end			
 	end
 
@@ -105,6 +93,10 @@ attr_accessor :name, :account_number, :balance
 			end
 			puts "You have no more password attempts. Please try again later."
 		end
+		customer_file = "#{@name}" + ".yaml"
+		File.open(customer_file, 'w') do |file|  
+  			file.puts YAML::dump(self)
+  		end
 	end
 
 # check_password methods confirms the customer has entered the correct pass word
@@ -116,41 +108,50 @@ attr_accessor :name, :account_number, :balance
 		end
 	end
 end
+end
 
 # method to open a new account and write it to customers.txt
 def open_account
-include Customer
+include Bank
 require 'yaml'
 	puts "What is the customer's name?"
 	customer_name = gets.chomp
-	puts "What is the customer's address?"
-	customer_address = gets.chomp
-	new_customer = Person.new(customer_name, customer_address)
-	#write the new_customer object to the customers.txt file, converted to YAML format
-	File.open('customers.txt', 'a+') do |f|  
-  		f.write(new_customer.to_yaml)
+	puts "What is the new account number?"
+	account_number = gets.chomp.to_i
+	puts "What is the opening balance of the account?"
+	opening_balance = gets.chomp.to_f
+	puts "Enter a password for the customer."
+	customer_password = gets.chomp
+	new_customer = BankAccount.new(customer_name, account_number, opening_balance, customer_password)
+	#write the new_customer object to the customers file
+	customer_file = "#{customer_name}" + ".yaml"
+	File.open(customer_file, 'w') do |file|  
+  		file.puts YAML::dump(new_customer)
 	end  
 end
 
 
-# method to bring up an account from customers.txt
+
+# method to load account from customer yaml file
 def load_account
-include Customer
+include Bank
 require 'yaml'
 	puts "What customer's account would you like to load?"
 	customer_name = gets.chomp
-	#File.open('customers.txt', 'a+') do |f|
-	#puts f.gets YAML::load(customer_name)
-	#end
-	thing = YAML.load_file('customers.txt')
-	puts thing.inspect
+	customer_file = "#{customer_name}" + ".yaml"
 
-	# http://www.skorks.com/2010/04/serializing-and-deserializing-objects-with-ruby/	
+	
+	File.open(customer_file, 'r') do |file|
+  	YAML::load(file.read)
+  	
+	end 
 end
 
 
-open_account
-load_account
+#open_account
+test_account = load_account
+test_account.transactions
+
 #my_account = BankAccount.new("Jen's Bank Account", 3334, 500, "password")
 
 #my_account.transactions
