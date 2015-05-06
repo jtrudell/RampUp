@@ -40,3 +40,37 @@ address: adfklj
 --- !ruby/object:Customer::Person
 name: Carla
 address: 100 S Wells, Chicago
+--- !ruby/object:Customer::Person
+name: Sloan
+address: 20 Elm Street
+--- !ruby/object:Customer::Person
+name: Jen
+address: '34'
+password: '324'
+--- !ruby/object:Customer::Person
+name: dfkl
+address: daskfjl
+--- !ruby/object:Customer::Person
+name: Carla
+address: 23 First Street
+--- !ruby/object:Customer::Person
+name: pass
+address: pass
+--- !ruby/object:Customer::Person
+name: pass
+address: pass
+--- !ruby/object:Customer::Person
+name: pass
+address: pass
+--- !ruby/object:Customer::Person
+name: Alice
+address: 20 Stem Street
+--- !ruby/object:Customer::Person
+name: Figaro
+address: '232'
+--- !ruby/object:Customer::Person
+name: Jen
+address: Jen
+--- !ruby/object:Customer::Person
+name: Bill
+address: dafkj
