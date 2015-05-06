@@ -1,6 +1,7 @@
 
 module Bank
-# create class BankAccount, which includes Customer module. BankAccount includes account name, number and balance.
+
+# create class BankAccount. BankAccount object initilized with customer name, account number, balance and password.
 class BankAccount
 
 
@@ -13,7 +14,7 @@ attr_accessor :name, :account_number, :balance, :password
 		@password = password
 	end
 
-# transaction_time method sets time of a transaction and formats it to M/D/Y and 12 hour time
+# transaction_time method sets time of a transaction and formats it to M/D/Y and 12 hour clock
 	def transaction_time
 		time = Time.now
 		time.strftime("%m/%d/%Y at %I:%M%p")
@@ -44,7 +45,7 @@ attr_accessor :name, :account_number, :balance, :password
 # status method prints out account name, account number, and balance
 	def status
 		puts "----Account Status as of #{transaction_time}----"
-		puts "Account Name: " + @name
+		puts "Account Name: " + @name +"'s Account"
 		puts "Account Number: #" + @account_number.to_s
 		puts "Balance: $" + @balance.to_s
 		puts "----------------------"
@@ -52,15 +53,19 @@ attr_accessor :name, :account_number, :balance, :password
 
 # atm method allows customer to call transactions method
 	def atm(selection)
+		# 1 is account status
 		if selection == "1"
 			status
 			transactions
+		# 2 is deposit	
 		elsif selection == "2"
 			deposit
 			transactions
+		# 3 is withdrawal
 		elsif selection == "3"
 			withdrawal
 			transactions
+		# 4 else writes updated info on customer (i.e., change in balance due to deposits/withdrawals) to customer's yaml file
 		else 
 			customer_file = "#{@name}" + ".yaml"
 				File.open(customer_file, 'w') do |file|  
@@ -70,11 +75,12 @@ attr_accessor :name, :account_number, :balance, :password
 	end
 
 # transactions methods allows customer to check account status or make depsoits/withdrawals
-# after they have entered their password. They have 3 tries to enter right pass word.
+# Must enter password each time you want to make a transaction. Customer has 3 tries to enter correct password.
 	def transactions
 		password_attempts = 2
 		puts "Enter your password: "
 		answer = gets.chomp
+		# calls check_password method. If check_password true (i.e. entered correct password), lists transaction options.
 		if check_password(answer) == true
 			puts "What would you like to do today? "
 			puts "\tEnter 1 to see account balance "
@@ -83,6 +89,7 @@ attr_accessor :name, :account_number, :balance, :password
 			puts "\tEnter Q to quit "
 			print "Selection: "
 			selection = gets.chomp
+			# calls atm method bassed on what number they have selected
 			atm(selection)
 		else
 			until password_attempts == 0
@@ -93,13 +100,14 @@ attr_accessor :name, :account_number, :balance, :password
 			end
 			puts "You have no more password attempts. Please try again later."
 		end
+		# writes updated info on customer (i.e., change in balance due to deposits/withdrawals) to customer's yaml file
 		customer_file = "#{@name}" + ".yaml"
 		File.open(customer_file, 'w') do |file|  
   			file.puts YAML::dump(self)
   		end
 	end
 
-# check_password methods confirms the customer has entered the correct pass word
+# check_password methods confirms the customer has entered the correct password
 	def check_password(entered_password)
 		if entered_password == @password
 			true
@@ -123,7 +131,7 @@ require 'yaml'
 	puts "Enter a password for the customer."
 	customer_password = gets.chomp
 	new_customer = BankAccount.new(customer_name, account_number, opening_balance, customer_password)
-	#write the new_customer object to the customers file
+	# write the new_customer object to the customer's yaml file
 	customer_file = "#{customer_name}" + ".yaml"
 	File.open(customer_file, 'w') do |file|  
   		file.puts YAML::dump(new_customer)
@@ -132,18 +140,15 @@ end
 
 
 
-# method to load account from customer yaml file
+# method to load account from customer's yaml file
 def load_account
 include Bank
 require 'yaml'
 	puts "What customer's account would you like to load?"
 	customer_name = gets.chomp
 	customer_file = "#{customer_name}" + ".yaml"
-
-	
 	File.open(customer_file, 'r') do |file|
   	YAML::load(file.read)
-  	
 	end 
 end
 
@@ -152,7 +157,4 @@ end
 test_account = load_account
 test_account.transactions
 
-#my_account = BankAccount.new("Jen's Bank Account", 3334, 500, "password")
-
-#my_account.transactions
 
