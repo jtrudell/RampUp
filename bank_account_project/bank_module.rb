@@ -14,6 +14,10 @@ attr_accessor :name, :account_number, :balance, :password
 		@password = password
 	end
 
+	def prompt
+		print ">> "
+	end
+
 # transaction_time method sets time of a transaction and formats it to M/D/Y and 12 hour clock
 	def transaction_time
 		time = Time.now
@@ -23,23 +27,25 @@ attr_accessor :name, :account_number, :balance, :password
 # account_balance method provides current account balance
 	def account_balance(deposit, withdrawal)
 		adjustment_to_balance = deposit - withdrawal
-		@balance = @balance + adjustment_to_balance
+		@balance += adjustment_to_balance
 	end
 
 # deposit method handles deposits to accounts
 	def deposit
-		puts "How much would you like to deposit?"
+		puts "\nHow much would you like to deposit?"
+		prompt
 		amount_deposited = gets.chomp.to_f
 		self.account_balance(amount_deposited, withdrawal=0)
-		puts "You deposited $#{amount_deposited.to_s} on #{transaction_time}"
+		puts Formatador.display_line("[green]You deposited $#{amount_deposited.to_s} on #{transaction_time}[/]\n") 
 	end
 
 # withdrawal method handles withdrawls from accounts
 	def withdrawal
-		puts "How much would you like to withdraw?"
+		puts "\nHow much would you like to withdraw?"
+		prompt
 		amount_withdrawn = gets.chomp.to_f
 		self.account_balance(deposit = 0, amount_withdrawn)
-		puts "You withdrew $#{amount_withdrawn.to_s} on #{transaction_time}"
+		puts Formatador.display_line("[green]You withdrew $#{amount_withdrawn.to_s} on #{transaction_time}[/]\n") 
 	end
 
 # status method prints out account name, account number, and balance
@@ -80,7 +86,8 @@ attr_accessor :name, :account_number, :balance, :password
 # Must enter password each time you want to make a transaction. Customer has 3 tries to enter correct password.
 	def transactions
 		password_attempts = 2
-		puts "Enter your password: "
+		puts "Please enter your password: "
+		prompt
 		answer = gets.chomp
 		# calls check_password method. If check_password true (i.e. entered correct password), lists transaction options.
 		if check_password(answer) == true
@@ -95,7 +102,8 @@ attr_accessor :name, :account_number, :balance, :password
 			atm(selection)
 		else
 			until password_attempts == 0
-				puts "Re-enter your password. You have #{password_attempts} more tries. "
+				puts "Re-enter your password. You have #{password_attempts} more tries."
+				prompt
 				answer = gets.chomp
 				check_password(answer)
 				password_attempts -=1
