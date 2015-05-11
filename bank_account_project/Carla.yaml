@@ -1,5 +1,0 @@
---- !ruby/object:Bank::BankAccount
-name: Carla
-account_number: 1123
-balance: 81303.0
-password: p

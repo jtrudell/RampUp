@@ -3,19 +3,23 @@
 
 require './bank_module'
 require 'yaml'
+require 'formatador'
 
 def prompt
 	print ">> "
 end
 
+def dollar_sign_divider
+	puts Formatador.display_line("\t[green]$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$[/]")
+end
+
 # method to open a new account and write BankAccount object to customer's yaml file
 def open_account
 include Bank
-	puts "Welcome to the First Bank of Ruby! We are glad you have decided to bank with us."
-	puts "Please enter your first name: "
+	puts "Please re-enter your first name: "
 	prompt
 	customer_name = gets.chomp
-	puts "Enter the opening balance for your new account: "
+	puts "Enter the amount of the opening deposit for your new account: "
 	prompt
 	opening_balance = gets.chomp.to_f
 	puts "Choose a password for your account: "
@@ -27,13 +31,12 @@ include Bank
 	new_customer = BankAccount.new(customer_name, account_number, opening_balance, customer_password)
 	# write the new_customer object to the customer's yaml file
 	new_customer.update_record(customer_name)
-
 end
 
 # method to load BankAccount object from customer's yaml file
 def load_account
 include Bank
-	puts "Please enter your first name."
+	puts "Please enter your first name to access your account."
 	prompt
 	customer_name = gets.chomp
 	customer_file = "#{customer_name}" + ".yaml"
@@ -46,10 +49,15 @@ include Bank
 	else
 		puts "It doesn't look like you have an account at First Bank of Ruby."
 		puts "Let's open a new account for you."
+		puts ""
 		open_account
 		load_account
 	end 
 end
+
+dollar_sign_divider
+puts Formatador.display_line("\t[blue]WELCOME TO THE FIRST BANK OF RUBY![/]")
+dollar_sign_divider
 
 # calls welcome method on BankAccount object that was loaded
 load_account.welcome
