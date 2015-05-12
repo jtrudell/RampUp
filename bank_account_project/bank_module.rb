@@ -46,6 +46,10 @@ require 'formatador'
 					puts "Please enter your password. You have #{password_attempts} password attempts left."
 					prompt
 					answer = gets.chomp
+					if answer == @password
+						atm_transactions
+						exit
+					end
 					password_attempts -=1
 				end
 				puts "\nYou have no more password attempts. Please try again later."
